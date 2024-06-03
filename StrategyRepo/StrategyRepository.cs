@@ -48,8 +48,6 @@ namespace StrategyRepository
 			{
 				// Logic to import JSON data
 				var items = ReadJsonFile(filePath);
-				// Placeholder logic - replace with actual implementation
-				// For example, parsing JSON and storing it in repository
 				repository.ClearAndAddRange(items);
 				return true;
 			}
@@ -68,7 +66,6 @@ namespace StrategyRepository
 			// Parse the JSON and extract only the 'Name' field
 			var jsonArray = JArray.Parse(json);
 			var people = new List<Item>();
-
 			foreach (var item in jsonArray)
 			{
 				var person = new Item
