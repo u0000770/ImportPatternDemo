@@ -24,8 +24,8 @@ namespace PatternDemo
              builder.Services.AddScoped<Repository.IRepository<Item>, GenRepository.Repository<Item> >();
 
             // Build and Register the MongoDB client
-           //  BuildMongoContext(builder);
-           //  builder.Services.AddScoped<IRepository<Item>, MongoRepository<Item>>();
+            // BuildMongoContext(builder);
+            // builder.Services.AddScoped<IRepository<Item>, MongoRepository<Item>>();
 
             builder.Services.AddControllersWithViews();
 

@@ -96,14 +96,16 @@ namespace PatternDemo.Controllers
                     importerStrategy.SetImportStrategy(new ExcelImportStrategy());
                     bool excelImportResult = importerStrategy.ImportData(file, _repository);
                 }
-                if (ext == "csv" )
+                if (ext == ".csv" )
                 {
 					importerStrategy.SetImportStrategy(new CSVImportStrategy());
-                }
-                if (ext == "json")
+					bool csvImportResult = importerStrategy.ImportData(file, _repository);
+				}
+                if (ext == ".json")
                 {
 					importerStrategy.SetImportStrategy(new JSONImportStrategy());
-                }
+					bool jsonImportResult = importerStrategy.ImportData(file, _repository);
+				}
             }
 
         }

@@ -1,8 +1,12 @@
 ﻿using Domain;
 using ExcelDataReader;
+using MongoDB.Bson.IO;
 using Repository;
+using System;
 using System.Data;
 using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace StrategyRepository
 {
@@ -43,10 +47,10 @@ namespace StrategyRepository
 			try
 			{
 				// Logic to import JSON data
-				Console.WriteLine($"Importing JSON data from file: {filePath}");
+				var items = ReadJsonFile(filePath);
 				// Placeholder logic - replace with actual implementation
 				// For example, parsing JSON and storing it in repository
-				repository.SaveChanges();
+				repository.ClearAndAddRange(items);
 				return true;
 			}
 			catch (Exception ex)
@@ -54,6 +58,27 @@ namespace StrategyRepository
 				Console.WriteLine($"Error importing JSON data from file: {filePath}. Error: {ex.Message}");
 				return false;
 			}
+		}
+
+
+		private  List<Item> ReadJsonFile(string filePath)
+		{
+			string json = File.ReadAllText(filePath);
+
+			// Parse the JSON and extract only the 'Name' field
+			var jsonArray = JArray.Parse(json);
+			var people = new List<Item>();
+
+			foreach (var item in jsonArray)
+			{
+				var person = new Item
+				{
+					Name = item.Value<string>("Name")
+				};
+				people.Add(person);
+			}
+
+			return people;
 		}
 	}
 
@@ -64,11 +89,14 @@ namespace StrategyRepository
 		{
 			try
 			{
-				// Logic to import CSV data
-				Console.WriteLine($"Importing CSV data from file: {filePath}");
-				// Placeholder logic - replace with actual implementation
-				// For example, parsing CSV and storing it in repository
-				repository.SaveChanges();
+				List<Item> listofItems = new List<Item>();
+				using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+				{
+					listofItems = ReadCSVFile(stream);
+				}
+
+				repository.ClearAndAddRange(listofItems);
+
 				return true;
 			}
 			catch (Exception ex)
@@ -76,6 +104,33 @@ namespace StrategyRepository
 				Console.WriteLine($"Error importing CSV data from file: {filePath}. Error: {ex.Message}");
 				return false;
 			}
+		}
+
+
+
+		private static List<Item> ReadCSVFile(FileStream stream)
+		{
+			List<Item> list = new List<Item>();
+			using (var reader = new StreamReader(stream))
+			{
+				var headerLine = reader.ReadLine();
+
+				// Loop through each line in the CSV file
+				while (!reader.EndOfStream)
+				{
+					var line = reader.ReadLine();
+					var values = line.Split(',');
+
+					// Assuming the CSV columns are: Id, Name, Price
+					var item = new Item
+					{
+						Name = values[0]
+					};
+
+					list.Add(item);
+				}
+			}
+			return list;
 		}
 	}
 
@@ -161,12 +216,7 @@ namespace StrategyRepository
 			{
 				// Logic to import Excel data
 				var listOfItems = ReadExcelFile(filePath);
-				repository.Clear();
-				foreach (var item in listOfItems)
-				{
-					repository.Add(item);
-				}
-				repository.SaveChanges();
+				repository.ClearAndAddRange(listOfItems);
 
 				return true;
 			}

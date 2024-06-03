@@ -61,7 +61,17 @@ namespace GenRepository
             _collection.InsertOne(entity);
         }
 
-        void IRepository<T>.Delete(T entity)
+		public void ClearAndAddRange(IEnumerable<T> entities)
+        {
+			Clear();
+			foreach (var entity in entities)
+			{
+				Add(entity);
+			}
+		}
+
+
+		void IRepository<T>.Delete(T entity)
         {
             throw new NotImplementedException();
         }

@@ -10,7 +10,8 @@ namespace Repository
     {
         public void Clear();
         public void Add(TEntity entity);
-        public void Update(TEntity entity);
+        public void ClearAndAddRange(IEnumerable<TEntity> entities);
+		public void Update(TEntity entity);
         public void Delete(TEntity entity);
         public TEntity GetById(int id);
         public IEnumerable<TEntity> GetAll();

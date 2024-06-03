@@ -27,6 +27,16 @@
             SaveChanges();          
         }
 
+        public void ClearAndAddRange(IEnumerable<TEntity> entities)
+        {
+            Clear();
+            foreach (var entity in entities)
+            {
+                _dbSet.Add(entity);
+            }
+            SaveChanges();
+        }
+
         public void Add(TEntity entity)
         {
             _dbSet.Add(entity);
