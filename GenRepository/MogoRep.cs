@@ -20,22 +20,11 @@ namespace GenRepository
             _collection = collection;
         }
 
-        //public List<T> GetAll()
-        //{
-        //    return _collection.Find(FilterDefinition<T>.Empty).ToList();
-        //}
-
         public void Clear()
         {
             var filter = Builders<T>.Filter.Empty;
             _collection.DeleteMany(filter);
         }
-
-
-        //void IRepository<T>.Add(T entity)
-        //{
-        //    Add(entity);
-        //}
 
         public void Add(T entity)
         {
@@ -63,6 +52,12 @@ namespace GenRepository
             _collection.InsertOne(entity);
         }
 
+        public IEnumerable<T> GetAll()
+        {
+            var entities = _collection.Find(FilterDefinition<T>.Empty).ToList();
+
+            return entities;
+        }
 
         public void ClearAndAddRange(IEnumerable<T> entities)
         {
@@ -73,8 +68,13 @@ namespace GenRepository
 			}
 		}
 
+        void IRepository<T>.SaveChanges()
+        {
+            return;
+        }
 
-		void IRepository<T>.Delete(T entity)
+        #region NOT IMPLEMENTED ( YET )
+        void IRepository<T>.Delete(T entity)
         {
             throw new NotImplementedException();
         }
@@ -83,14 +83,6 @@ namespace GenRepository
         {
             throw new NotImplementedException();
         }
-
-        public IEnumerable<T> GetAll()
-        {
-            var entities = _collection.Find(FilterDefinition<T>.Empty).ToList();
-
-            return entities;
-        }
-
 
         T IRepository<T>.GetById(int id)
         {
@@ -102,12 +94,11 @@ namespace GenRepository
             throw new NotImplementedException();
         }
 
-        void IRepository<T>.SaveChanges()
-        {
-            return;
-        }
 
-        // Implement other CRUD methods as needed
+
+        #endregion
+
+
     }
 
 }

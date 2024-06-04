@@ -9,17 +9,7 @@ namespace StrategyRepo
 {
 	public class ExcelImportStrategy : IDataImportStrategy
 	{
-		static string ExtractTime(string input)
-		{
-			// Parse the input string into a DateTime object
-			DateTime dateTime = DateTime.ParseExact(input, "dd/MM/yyyy HH:mm:ss", null);
-
-			// Extract the time part and format it as HH:mm:ss
-			string time = dateTime.ToString("HH:mm:ss");
-
-			return time;
-		}
-
+	
 		private List<Item> ReadExcelFile(string filePath)
 		{
 			#region Windows and.Net config

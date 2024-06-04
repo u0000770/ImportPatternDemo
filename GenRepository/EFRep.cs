@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Linq.Expressions;
     using Microsoft.EntityFrameworkCore;
-    using SharpCompress.Common;
     using SqlItems;
 
     public class Repository<TEntity> : Repository.IRepository<TEntity> where TEntity : class

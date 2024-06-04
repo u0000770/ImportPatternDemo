@@ -13,38 +13,25 @@ namespace PatternDemo.Controllers
 {
     public class HomeController : Controller
     {
-       // private readonly ILogger<HomeController> _logger;
+
+        #region construction
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IRepository<Item> _repository;
 
         public HomeController(IWebHostEnvironment hostingEnvironment, IRepository<Item> repository )
         {
-           // _logger = logger;
             _hostingEnvironment = hostingEnvironment;
             _repository = repository;
         }
+        #endregion
 
+        #region Actions
         public IActionResult Index()
         {
             return View();
         }
 
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public string GetDataFilePath()
-        {
-            string contentRootPath = _hostingEnvironment.ContentRootPath;
-            string dataFilePath = Path.Combine(contentRootPath, "AppData");
-            return dataFilePath;
-        }
-
         [HttpPost("FileUpload")]
-        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> FileUpload(List<Microsoft.AspNetCore.Http.IFormFile> files)
         {
             try
@@ -59,13 +46,14 @@ namespace PatternDemo.Controllers
                 {
                     if (formFile.Length > 0)
                     {
-    
+                        // managing file location and name/type
                         var originalFileName = formFile.FileName;
                         var extension = Path.GetExtension(originalFileName);
                         extensions.Add(extension);
                         var evnPath = GetDataFilePath();
                         var relativePath = Path.Combine(evnPath, Guid.NewGuid().ToString() + extension);
                         filePaths.Add(relativePath);
+                        // copy file to local file store
                         using (var stream = new FileStream(relativePath, FileMode.Create))
                         {
                             await formFile.CopyToAsync(stream);
@@ -84,8 +72,26 @@ namespace PatternDemo.Controllers
 
             return View();
         }
+        #endregion
 
-        // The Client Code that uses the strategy and injects the repository
+        #region FileManagement
+
+        /// <summary>
+        /// uses host environment to get the path to our local data store
+        /// </summary>
+        /// <returns></returns>
+        private string GetDataFilePath()
+        {
+            string contentRootPath = _hostingEnvironment.ContentRootPath;
+            string dataFilePath = Path.Combine(contentRootPath, "AppData");
+            return dataFilePath;
+        }
+
+
+        /// <summary>
+        /// The Client Code that selects the appropriate strategy and injects the repository
+        /// </summary>
+        /// <param name="filePaths"></param>
         public void ProcessAndSaveData(List<string> filePaths)
         {
 			ImporterStrategyContext importerStrategy = new ImporterStrategyContext();
@@ -110,7 +116,17 @@ namespace PatternDemo.Controllers
             }
 
         }
+
+        #endregion
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
+
+
 
 
 }
