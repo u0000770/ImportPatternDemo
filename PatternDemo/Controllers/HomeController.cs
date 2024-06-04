@@ -7,6 +7,7 @@ using StrategyRepository;
 using GenRepository;
 using Repository;
 using Domain;
+using StrategyRepo;
 
 namespace PatternDemo.Controllers
 {

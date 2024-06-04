@@ -58,10 +58,13 @@ namespace GenRepository
                 // If the Id property type is not integer, MongoDB will handle its generation
             }
 
+
+
             _collection.InsertOne(entity);
         }
 
-		public void ClearAndAddRange(IEnumerable<T> entities)
+
+        public void ClearAndAddRange(IEnumerable<T> entities)
         {
 			Clear();
 			foreach (var entity in entities)
@@ -83,8 +86,11 @@ namespace GenRepository
 
         public IEnumerable<T> GetAll()
         {
-            return _collection.Find(FilterDefinition<T>.Empty).ToList();
+            var entities = _collection.Find(FilterDefinition<T>.Empty).ToList();
+
+            return entities;
         }
+
 
         T IRepository<T>.GetById(int id)
         {

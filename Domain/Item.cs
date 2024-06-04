@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public required string Name { get; set; }
+        public TimeSpan Time { get; set; }
 
         // An implicit operator in C# allows you to define custom implicit conversions
         // between two types.

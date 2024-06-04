@@ -11,21 +11,18 @@ using Repository;
 namespace PatternDemo
 {
     public class Program
-
-
-
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Sql Context
-             builder.Services.AddDbContext<MyDbContext>();
-             builder.Services.AddScoped<Repository.IRepository<Item>, GenRepository.Repository<Item> >();
+           builder.Services.AddDbContext<MyDbContext>();
+           builder.Services.AddScoped<Repository.IRepository<Item>, GenRepository.Repository<Item> >();
 
             // Build and Register the MongoDB client
-            // BuildMongoContext(builder);
-            // builder.Services.AddScoped<IRepository<Item>, MongoRepository<Item>>();
+           //  BuildMongoContext(builder);
+           //  builder.Services.AddScoped<IRepository<Item>, MongoRepository<Item>>();
 
             builder.Services.AddControllersWithViews();
 

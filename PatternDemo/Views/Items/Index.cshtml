@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Domain.Item>
+﻿@model IEnumerable<runnerVM>
 
 @{
     ViewData["Title"] = "Index";
@@ -15,7 +15,9 @@
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
+                
             </th>
+            <th>@Html.DisplayNameFor(model => model.Time)</th>
         </tr>
     </thead>
     <tbody>
@@ -24,6 +26,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
         </tr>
 }
     </tbody>

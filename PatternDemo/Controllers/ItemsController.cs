@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Domain;
 using SqlItems;
+using PatternDemo.Models;
 
 namespace PatternDemo.Controllers
 {
@@ -21,7 +22,9 @@ namespace PatternDemo.Controllers
 
         public IActionResult Index()
         {
-            return View( _context.GetAll());
+            var all = _context.GetAll();
+            var vm = runnerVM.buildVM(all.ToList());
+			return View(vm);
         }
 
         // GET: Items/Details/5

@@ -60,7 +60,8 @@
                 // Create a new item
                 var newItem = new Item
                 {
-                    Name = "Barry Sql Hebbron"
+                    Name = "Barry Sql Hebbron",
+                    Time = TimeSpan.FromSeconds(1),
                 };
 
                 // Add the item to the collection
